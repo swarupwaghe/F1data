@@ -49,7 +49,22 @@
 }
 
 .f1-red-glow {
-  box-shadow: 0 0 20px rgba(225, 6, 0, 0.35);
+  box-shadow: 0 0 25px rgba(225, 6, 0, 0.5);
+}
+
+/* Motorsport Throttle Rev Shake Animation */
+@keyframes throttle-shake {
+  0% { transform: scale(1.05) translate(0, 0) rotate(0deg); }
+  20% { transform: scale(1.06) translate(-1px, 1px) rotate(-0.5deg); }
+  40% { transform: scale(1.06) translate(1px, -1px) rotate(0.5deg); }
+  60% { transform: scale(1.07) translate(-1px, -1px) rotate(-0.5deg); }
+  80% { transform: scale(1.06) translate(1px, 1px) rotate(0.5deg); }
+  100% { transform: scale(1.05) translate(0, 0) rotate(0deg); }
+}
+
+.animate-throttle-shake:hover {
+  animation: throttle-shake 0.15s ease-in-out infinite;
+  box-shadow: 0 0 35px rgba(225, 6, 0, 0.8), 0 0 15px rgba(255, 184, 0, 0.6);
 }
 
 /* Custom Scrollbar */

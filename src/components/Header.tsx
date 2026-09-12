@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flag, Gauge, Activity, Layers } from 'lucide-react';
+import { Flag, Gauge, Activity, Home } from 'lucide-react';
 
 interface HeaderProps {
   onGoToLanding?: () => void;
@@ -31,7 +31,7 @@ export const Header: React.FC<HeaderProps> = ({ onGoToLanding }) => {
             </div>
           </div>
 
-          {/* Quick Actions & Navigation */}
+          {/* Navigation & Quick Badges */}
           <div className="flex items-center space-x-3">
             
             {onGoToLanding ? (
@@ -39,8 +39,8 @@ export const Header: React.FC<HeaderProps> = ({ onGoToLanding }) => {
                 onClick={onGoToLanding}
                 className="flex items-center space-x-2 px-3.5 py-2 rounded-xl bg-gray-900 hover:bg-gray-800 text-xs font-bold text-gray-200 border border-gray-700 transition-all cursor-pointer shadow-lg"
               >
-                <Layers className="w-4 h-4 text-cyan-400" />
-                <span>3D Exploded Blueprint</span>
+                <Home className="w-4 h-4 text-red-500" />
+                <span>Cinematic Hero</span>
               </button>
             ) : null}
 
