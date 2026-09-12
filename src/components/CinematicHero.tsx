@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { playEngineRevSound } from '../lib/audioEngine';
-import { Flame, ChevronRight, Gauge, Volume2, VolumeX } from 'lucide-react';
+import { Flame, ChevronRight, Volume2, VolumeX, Gauge } from 'lucide-react';
 
 interface CinematicHeroProps {
   onRevUp: () => void;
@@ -24,7 +24,7 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({ onRevUp }) => {
   // Scroll Fallback Listener: If user scrolls, reveal CTA button immediately
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 30 && !videoEnded) {
+      if (window.scrollY > 20 && !videoEnded) {
         if (videoRef.current && !videoRef.current.paused) {
           videoRef.current.pause();
         }
@@ -36,7 +36,7 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({ onRevUp }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [videoEnded]);
 
-  // Handle CTA Click
+  // Handle Rev Up Engine Action -> Data Page
   const handleRevUpClick = () => {
     if (isRevving) return;
     setIsRevving(true);
@@ -74,93 +74,72 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({ onRevUp }) => {
         Your browser does not support HTML5 video.
       </video>
 
-      {/* Dark Gradient Vignette Overlay for Depth & Contrast */}
+      {/* Dark Ambient Vignette Overlay Matching Video Background */}
       <div
-        className={`absolute inset-0 transition-all duration-500 ease-out ${
+        className={`absolute inset-0 transition-all duration-500 ease-out pointer-events-none ${
           videoEnded
-            ? 'bg-gradient-to-t from-black via-black/60 to-black/40 backdrop-blur-[2px]'
-            : 'bg-gradient-to-t from-black/60 via-transparent to-black/40'
+            ? 'bg-gradient-to-t from-black via-black/50 to-black/30 backdrop-blur-[2px]'
+            : 'bg-gradient-to-t from-black/50 via-transparent to-black/30'
         }`}
       />
 
-      {/* Top Left Minimal Overlay */}
-      <header className="relative z-20 max-w-7xl w-full mx-auto p-6 sm:p-8 flex items-center justify-between pointer-events-none">
-        <div className="flex items-center space-x-3 pointer-events-auto">
-          <div className="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center text-white shadow-xl shadow-red-900/50 ring-2 ring-red-400/40">
-            <Gauge className="w-6 h-6 animate-pulse" />
-          </div>
-          <div>
-            <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-2">
-              RED BULL FORD <span className="text-red-500">F1 2026</span>
-            </h1>
-            <p className="text-xs font-bold uppercase tracking-widest text-gray-300">
-              Formula 1 Next-Gen Livery & Telemetry Showcase
-            </p>
-          </div>
+      {/* Top Header Bar (No left header title, audio toggle top right) */}
+      <header className="relative z-30 max-w-7xl w-full mx-auto p-6 sm:p-8 flex items-center justify-between pointer-events-none">
+        
+        {/* Minimal F1 Gauge Badge */}
+        <div className="flex items-center space-x-2 text-xs font-mono font-bold text-red-500 bg-black/60 px-3 py-1.5 rounded-full border border-red-500/30 backdrop-blur-md pointer-events-auto">
+          <Gauge className="w-4 h-4 text-red-500 animate-pulse" />
+          <span>F1 TELEMETRY READY</span>
         </div>
 
         {/* Audio Mute/Unmute Toggle Button */}
         <button
           onClick={toggleMute}
-          className="pointer-events-auto p-2.5 rounded-full bg-black/60 border border-white/20 text-white hover:bg-black/80 hover:scale-105 transition-all cursor-pointer backdrop-blur-md"
+          className="pointer-events-auto p-2.5 rounded-full bg-black/60 border border-white/20 text-white hover:bg-black/80 hover:scale-105 transition-all cursor-pointer backdrop-blur-md shadow-lg"
           title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
         >
           {isMuted ? <VolumeX className="w-5 h-5 text-gray-400" /> : <Volume2 className="w-5 h-5 text-red-400" />}
         </button>
       </header>
 
-      {/* Center / Bottom Cinematic CTA Reveal Area */}
-      <div className="relative z-20 max-w-4xl w-full mx-auto px-6 pb-20 flex flex-col items-center text-center space-y-6">
+      {/* Center Stage: REV UP ENGINE CTA BUTTON (Matching Background & Video Aesthetics) */}
+      <div className="relative z-30 max-w-4xl w-full mx-auto px-6 pb-24 flex flex-col items-center justify-center text-center space-y-6">
         
-        {/* Headline */}
+        {/* Background-Matched Glassmorphism Pill Container */}
         <div
           className={`transition-all duration-700 ease-out transform ${
             videoEnded
               ? 'opacity-100 translate-y-0 scale-100'
-              : 'opacity-0 translate-y-8 scale-95 pointer-events-none'
+              : 'opacity-90 translate-y-0 scale-100'
           }`}
         >
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-red-950/80 border border-red-700/60 text-red-400 text-xs font-extrabold uppercase tracking-widest mb-4 shadow-xl">
-            <Flame className="w-4 h-4 text-yellow-400 animate-pulse" />
-            <span>POWER UNIT REVOLUTION • 2026 ERA</span>
-          </div>
-
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-tight drop-shadow-2xl">
-            UNLEASH THE <span className="text-red-500 font-extrabold">TELEMETRY</span>
-          </h2>
-          <p className="max-w-xl mx-auto text-sm sm:text-base text-gray-300 font-medium mt-3 drop-shadow">
-            Experience real-time lap-by-lap analytics, historical race comparisons, and driver pace battle metrics.
-          </p>
-        </div>
-
-        {/* MOTORSPORT-INSPIRED "REV UP ENGINE" CTA BUTTON */}
-        <div
-          className={`transition-all duration-700 delay-150 ease-out transform ${
-            videoEnded
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-12 pointer-events-none'
-          }`}
-        >
+          {/* Main "REV UP ENGINE" Button Blending with Dark Video BG */}
           <button
             onClick={handleRevUpClick}
             disabled={isRevving}
-            className={`group relative inline-flex items-center justify-center space-x-4 px-10 py-5 rounded-2xl font-black text-lg uppercase tracking-widest text-white shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden animate-throttle-shake ${
+            className={`group relative inline-flex items-center justify-center space-x-4 px-10 py-5 rounded-2xl font-black text-lg sm:text-xl uppercase tracking-widest text-white backdrop-blur-xl border border-red-500/50 shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden animate-throttle-shake ${
               isRevving
-                ? 'bg-red-700 scale-95 ring-4 ring-red-500/60'
-                : 'bg-gradient-to-r from-red-600 via-red-500 to-red-700 hover:from-red-500 hover:to-red-600 ring-2 ring-red-400/50'
+                ? 'bg-red-950/90 border-red-500 scale-95 ring-4 ring-red-500/50'
+                : 'bg-black/70 hover:bg-black/90 hover:border-red-500 hover:scale-105 ring-2 ring-red-500/30'
             }`}
           >
-            {/* Pulsing Red Aura Background */}
-            <span className="absolute inset-0 bg-gradient-to-r from-yellow-500/20 via-red-500/30 to-yellow-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            {/* Glowing Red/Yellow Throttle Background Gradient on Hover */}
+            <span className="absolute inset-0 bg-gradient-to-r from-red-600/30 via-yellow-500/20 to-red-600/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             
-            <Flame className={`w-7 h-7 text-yellow-300 ${isRevving ? 'animate-bounce' : 'group-hover:scale-125 transition-transform'}`} />
-            
+            <div className="w-10 h-10 rounded-xl bg-red-600/80 group-hover:bg-red-600 flex items-center justify-center text-white shadow-lg transition-colors">
+              <Flame className={`w-6 h-6 text-yellow-300 ${isRevving ? 'animate-bounce' : 'group-hover:scale-125 transition-transform'}`} />
+            </div>
+
             <span className="relative font-black tracking-widest drop-shadow-md">
               {isRevving ? 'REVVING ENGINE...' : 'REV UP ENGINE'}
             </span>
 
-            <ChevronRight className="w-6 h-6 text-white group-hover:translate-x-1.5 transition-transform" />
+            <ChevronRight className="w-6 h-6 text-red-500 group-hover:text-white group-hover:translate-x-1.5 transition-all" />
           </button>
+          
+          <p className="text-xs font-semibold text-gray-400 tracking-wider uppercase mt-3 drop-shadow">
+            Click to rev engine & launch into race pace data
+          </p>
         </div>
 
       </div>
