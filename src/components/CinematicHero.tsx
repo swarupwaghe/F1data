@@ -12,9 +12,18 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({ onRevUp }) => {
   const [isMuted, setIsMuted] = useState<boolean>(true);
   const [isRevving, setIsRevving] = useState<boolean>(false);
 
-  // Video URL & Poster Frame from Red Bull Ford F1 2026 Live Wallpaper
-  const videoUrl = 'https://www.desktophut.com/files/1768987955.mp4';
-  const posterUrl = 'https://www.desktophut.com/images/8306_mpc-hc64_bLRyg4Oeot.jpg';
+  // Video URL & Poster Frame from Ferrari SF-26 F1 Live Wallpaper
+  const videoUrl = 'https://www.desktophut.com/files/1773917256.mp4';
+  const posterUrl = 'https://www.desktophut.com/images/ferrari-sf-26-f1-live-wallpaper-1773917256.webp';
+
+  // Ensure autoplay starts smoothly
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch((err) => {
+        console.warn('Autoplay prevented or failed:', err);
+      });
+    }
+  }, [videoUrl]);
 
   // Native onEnded handler
   const handleVideoEnded = () => {
@@ -56,10 +65,11 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({ onRevUp }) => {
   return (
     <section className="relative w-full h-screen overflow-hidden bg-black flex flex-col justify-between selection:bg-red-600 selection:text-white">
       
-      {/* Autopolaying Edge-to-Edge Background Video */}
+      {/* Autoplay & Looping Edge-to-Edge Background Video */}
       <video
         ref={videoRef}
         autoPlay
+        loop
         muted={isMuted}
         playsInline
         preload="auto"
